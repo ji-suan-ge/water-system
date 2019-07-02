@@ -1,0 +1,28 @@
+CREATE TABLE `purchase` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `waterID` int(11) DEFAULT NULL,
+  `supplierID` int(11) DEFAULT NULL,
+  `staffID` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `time` timestamp NOT NULL,
+  PRIMARY KEY (`ID`),
+  FOREIGN KEY (`waterID`) REFERENCES `water` (`ID`),
+  FOREIGN KEY (`supplierID`) REFERENCES `supplier` (`ID`),
+  FOREIGN KEY (`staffID`) REFERENCES `staff` (`ID`)
+);
+
+INSERT INTO `purchase` VALUES
+(3,1,1,2,200,'2019-06-14 06:05:35'),
+(4,3,1,1,300,'2019-06-14 06:10:00'),
+(5,1,2,1,100,'2019-06-14 06:10:58'),
+(6,3,1,1,300,'2019-05-14 06:14:06'),
+(7,1,1,2,10,'2019-06-14 12:35:47'),
+(8,1,2,1,36,'2019-06-14 16:46:25'),
+(9,3,1,31,136,'2019-06-14 16:56:52'),
+(10,1,2,31,10,'2019-06-14 17:42:47'),
+(11,5,3,22,150,'2019-06-15 01:15:57'),
+(12,5,3,22,150,'2019-06-15 01:16:17'),
+(13,2,2,23,16,'2019-06-15 01:17:27'),
+(14,6,2,12,100,'2019-06-15 02:30:10'),
+(15,7,5,12,200,'2019-06-15 02:30:22'),
+(16,14,18,22,10,'2019-06-15 04:40:07');

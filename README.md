@@ -1,0 +1,532 @@
+# 数据项
+
+| 数据项      | 类型  | 长度 | 备注                                                         |
+| ----------- | ----- | ---- | ------------------------------------------------------------ |
+| 客户编号    | INT   | -    | 自动递增，不能为Null，为15位的字符                           |
+| 联系人姓名  | VCHAR | 30   | 不能为Null，联系人姓名可以重复                               |
+| 客户地址    | VCHAR | 200  | -                                                            |
+| 联系电话    | VCHAR | 11   | -                                                            |
+| 订单号      | INT   | -    | 自动动递增，订单号是唯一的                                   |
+| 处理时间    | TIME  | -    | 不能为Null                                                   |
+| 矿泉水编号  | INT   | -    | 自动递增，编号唯一                                           |
+| 数量        | INT   | -    | 不能为Null，正数为增加，负数为减少                           |
+| 工号        | INT   | -    | 自动递增，工号唯一，为15位的字符                             |
+| 姓名        | VCHAR | 30   | 不能为Null，姓名可以重复                                     |
+| 性别        | INT   | -    | 只能取 “0” 或 "1" ，“0” 为 “男”， “1” 为 女                  |
+| 入职年份    | TIME  | -    | 不能为Null                                                   |
+| 基本工资    | INT   | -    | 大于 0 ，单位为 “分”                                         |
+| 出生日期    | TIME  | -    | -                                                            |
+| 仓库名      | VCHAR | 30   | 不能为Null                                                   |
+| 仓库编号    | INT   | -    | 自动递增，编号唯一                                           |
+| 仓库地址    | VCHAR | 200  | -                                                            |
+| 出/入库时间 | TIME  | -    | 不能为Null，当数量为正数时，表示入库时间，当数量为负数时，表示出库时间 |
+| 供应商编号  | INT   | -    | 自动递增，编号唯一                                           |
+| 供应商名称  | VCHAR | 30   | 不能为Null，可重复                                           |
+| 供应商地址  | VCHAR | 200  | -                                                            |
+| 矿泉水名称  | VCHAR | 30   | 不能为Null                                                   |
+| 矿泉水规格  | INT   | -    | “0” 表示“小”， “1” 表示 “中”， “2” 表示大                    |
+| 矿泉水成本  | INT   | -    | 大于 0 ，单位为分                                            |
+| 矿泉水售价  | INT   | -    | 大于 0 ，单位为分                                            |
+| 种类数      | INT   | -    | 非负                                                         |
+
+
+
+# 关系模式
+
+| 关系名       | 属性                                                         | 外键                   |
+| ------------ | ------------------------------------------------------------ | ---------------------- |
+| 客户信息     | <u>客户编号</u>、联系人姓名、客户地址、联系电话、状态        |                        |
+| 员工信息     | <u>工号</u>、姓名、性别、入职年份、基本工资、出生日期、状态  |                        |
+| 供应商       | <u>供应商编号</u>、供应商名称、联系电话、供应商地址、供应产品的种类数、状态 |                        |
+| 矿泉水       | <u>矿泉水编号</u>、矿泉水名称、规格、成本、售价、状态        |                        |
+| 订单信息     | <u>订单号</u>、客户编号、矿泉水编号、产品数量、下单时间、状态 | 客户编号、矿泉水编号   |
+| 仓库         | <u>仓库编号</u>、仓库名、仓库地址、状态                      |                        |
+| 仓库存放信息 | <u>仓库编号、矿泉水编号</u>、数量                            | 仓库编号、矿泉水编号   |
+| 供应产品     | <u>矿泉水编号、供应商编号</u>                                | 矿泉水编号、供应商编号 |
+| 送货记录     | <u>订单号</u>、工号、处理时间                                | 订单号、工号           |
+| 存/取货记录  | <u>记录编号</u>、工号、矿泉水编号、数量、存货时间            | 工号、矿泉水编号       |
+
+
+
+# 索引
+
+1、在客户信息表主码属性列上建立主键索引
+2、在员工信息表主码属性列上建立主键索引
+3、在供应商表主码属性列上建立主键索引
+4、在矿泉水表主码属性列上建立主键索引
+5、在订单信息表主码属性列上建立主键索引
+6、在仓库表主码属性列上建立主键索引
+7、在送货记录主码属性列上建立主键索引
+8、存/取记录表主码属性列上建立主键索引
+
+
+
+# SQL建表语句
+
+
+
+## 客户信息表
+
+```sql
+CREATE TABLE `custom` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  `gender` int(11) DEFAULT NULL,
+  `address` varchar(200) DEFAULT NULL,
+  `phoneNumber` varchar(11) DEFAULT NULL,
+  `state` int(11) NOT NULL,
+  `password` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+);
+```
+
+
+
+## 员工信息表
+
+```sql
+CREATE TABLE `staff` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  `gender` int(11) DEFAULT NULL,
+  `dateOfEntry` timestamp NOT NULL,
+  `salary` int(11) DEFAULT NULL,
+  `birthday` timestamp NOT NULL,
+  `state` int(11) NOT NULL,
+  PRIMARY KEY (`ID`)
+);
+```
+
+
+
+## 供应商表
+
+```sql
+CREATE TABLE `supplier` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  `phoneNumber` varchar(11) DEFAULT NULL,
+  `address` varchar(200) DEFAULT NULL,
+  `productNumber` int(11) DEFAULT NULL,
+  `state` int(11) NOT NULL,
+  PRIMARY KEY (`ID`)
+);
+```
+
+
+
+## 矿泉水表
+
+```sql
+CREATE TABLE `water` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  `size` varchar(11) DEFAULT NULL,
+  `cost` int(11) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
+  `state` int(11) NOT NULL,
+  PRIMARY KEY (`ID`)
+);
+```
+
+
+
+## 订单信息表
+
+```sql
+CREATE TABLE `orderDetail` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `customID` int(11) DEFAULT NULL,
+  `waterID` int(11) DEFAULT NULL,
+  `number` int(11) DEFAULT NULL,
+  `time` timestamp NOT NULL,
+  `state` int(11) NOT NULL,
+  PRIMARY KEY (`ID`),
+  FOREIGN KEY (`waterID`) REFERENCES `water` (`ID`),
+  FOREIGN KEY (`customID`) REFERENCES `custom` (`ID`)
+);
+```
+
+
+
+## 仓库表
+
+```sql
+CREATE TABLE `repository` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  `address` varchar(200) DEFAULT NULL,
+  `state` int(11) NOT NULL,
+  PRIMARY KEY (`ID`)
+);
+```
+
+
+
+## 仓库存放信息表
+
+```sql
+CREATE TABLE `stock` (
+  `repositoryID` int(11) NOT NULL AUTO_INCREMENT,
+  `waterID` int(11) NOT NULL,
+  `number` int(11) DEFAULT NULL,
+  PRIMARY KEY (`repositoryID`,`waterID`),
+  FOREIGN KEY (`repositoryID`) REFERENCES `repository` (`ID`),
+  FOREIGN KEY (`waterID`) REFERENCES `water` (`ID`)
+);
+```
+
+
+
+## 供应产品表
+
+```sql
+CREATE TABLE `supplierWater` (
+  `supplierID` int(11) NOT NULL,
+  `waterID` int(11) NOT NULL,
+  PRIMARY KEY (`supplierID`,`waterID`),
+  FOREIGN KEY (`supplierID`) REFERENCES `supplier` (`ID`),
+  FOREIGN KEY (`waterID`) REFERENCES `water` (`ID`)
+);
+```
+
+
+
+## 送货记录表
+
+```sql
+CREATE TABLE `delivery` (
+  `orderDetailID` int(11) NOT NULL AUTO_INCREMENT,
+  `staffID` int(11) DEFAULT NULL,
+  `time` timestamp NOT NULL,
+  PRIMARY KEY (`orderDetailID`),
+  FOREIGN KEY (`orderDetailID`) REFERENCES `orderDetail` (`ID`),
+  FOREIGN KEY (`staffID`) REFERENCES `staff` (`ID`)
+);
+```
+
+
+
+## 进货记录表
+
+```sql
+CREATE TABLE `purchase` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `waterID` int(11) DEFAULT NULL,
+  `supplierID` int(11) DEFAULT NULL,
+  `staffID` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `time` timestamp NOT NULL,
+  PRIMARY KEY (`ID`),
+  FOREIGN KEY (`waterID`) REFERENCES `water` (`ID`),
+  FOREIGN KEY (`supplierID`) REFERENCES `supplier` (`ID`),
+  FOREIGN KEY (`staffID`) REFERENCES `staff` (`ID`)
+);
+```
+
+
+
+## 存/取货记录表
+
+```sql
+CREATE TABLE `flowRecord` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `staffID` int(11) DEFAULT NULL,
+  `waterID` int(11) DEFAULT NULL,
+  `number` int(11) DEFAULT NULL,
+  `time` timestamp NOT NULL,
+  PRIMARY KEY (`ID`),
+  FOREIGN KEY (`staffID`) REFERENCES `staff` (`ID`),
+  FOREIGN KEY (`waterID`) REFERENCES `water` (`ID`)
+);
+```
+
+
+
+## 管理员表
+
+```sql
+CREATE TABLE `admin` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `password` varchar(15) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  PRIMARY KEY (`ID`)
+);
+```
+
+
+
+# 触发器
+
+
+
+## 增加```矿泉水表```记录时
+
+自动增加```仓库存放信息表记录```
+
+```sql
+CREATE TRIGGER
+  `insertWater`
+AFTER INSERT ON
+  water
+FOR EACH ROW
+BEGIN
+  INSERT INTO
+    stock(repositoryID, waterID, number)
+  VALUES
+    (1, new.ID, 0);
+END;
+```
+
+
+
+
+## 增加```供应产品表```记录时
+
+自动增加```供应商表```中的供应产品种类数
+
+```sql
+CREATE TRIGGER
+  `insertSupplierWater`
+AFTER INSERT ON
+  supplierWater
+FOR EACH ROW
+BEGIN
+  UPDATE
+    supplier
+  SET
+    supplier.productNumber = supplier.productNumber + 1
+  WHERE
+    supplier.ID = new.supplierID;
+END;
+```
+
+
+
+## 删除```供应产品表```记录时
+自动减少```供应商表```中的供应产品种类数
+
+```sql
+CREATE TRIGGER
+  deleteSupplierWater
+AFTER DELETE ON
+  supplierWater
+FOR EACH ROW
+BEGIN
+  UPDATE
+    supplier 
+  SET
+    supplier.productNumber = supplier.productNumber - 1
+  WHERE
+    supplier.ID = old.supplierID;
+END;
+```
+
+
+
+## 增加进货记录表时
+
+自动增加```存/取货记录表```
+
+```sql
+CREATE TRIGGER
+  `insertPurchase`
+AFTER INSERT ON
+  purchase
+FOR EACH ROW
+BEGIN
+  INSERT
+    flowRecord(staffID, waterID, number, time)
+  VALUES
+    (new.staffID, new.waterID, new.quantity, CURRENT_TIMESTAMP);
+END;
+```
+
+
+
+## 增加送货记录时
+
+自动增加```存/取货记录表```
+
+```sql
+CREATE TRIGGER
+  `insertDelivery`
+AFTER INSERT ON
+  delivery
+FOR EACH ROW
+BEGIN
+  DECLARE newNumber INT;
+  DECLARE newWaterID decimal(8,4);
+
+  SELECT
+    number, waterID
+  INTO
+    newNumber, newWaterID
+  FROM
+    orderDetail
+  WHERE
+    ID = new.orderDetailID;
+      
+  SET newNumber = 0 - newNumber;
+
+  INSERT INTO
+    flowRecord(staffID, waterID, number, time)
+  VALUES
+    (new.staffID, newWaterID, newNumber, new.time);     
+  UPDATE
+    orderDetail
+  SET
+    orderDetail.state = 2
+  WHERE
+    ID = new.orderDetailID;
+END;
+```
+
+
+
+## 增加```存/取货记录表```时
+自动修改```仓库存放信息表```
+
+```sql
+CREATE TRIGGER
+  `insertFlowRecord`
+AFTER INSERT ON
+  flowRecord
+FOR EACH ROW
+BEGIN
+  UPDATE
+    stock 
+  SET
+    number = number + new.number 
+  WHERE
+    waterID = new.waterID;
+END;
+```
+
+
+
+
+# 视图
+
+## 月度财务报表
+
+月份，月销售总额，月进货总额，月工资总额，月利润
+
+```sql
+CREATE VIEW `monthlyProfit`
+AS
+SELECT
+  `monthlySales`.`yearmonth` AS `yearmonth`,
+  sum(`monthlySales`.`totalSales`) AS `totalSales`,
+  sum(`monthlyPurchase`.`totalPurchase`) AS `totalPurchase`,
+  (SELECT sum(`staff`.`salary`) FROM `staff`) AS `totalSalary`,
+  (
+    (sum(`monthlySales`.`totalSales`) - sum(`monthlyPurchase`.`totalPurchase`)) - (SELECT sum(`staff`.`salary`) FROM `staff`)
+  ) AS `totalProfit`
+FROM
+  (`monthlySales` JOIN `monthlyPurchase`)
+WHERE
+  (`monthlyPurchase`.`yearmonth` = `monthlySales`.`yearmonth`)
+GROUP BY
+  `monthlySales`.`yearmonth`;
+```
+
+
+
+## 月度工单统计
+
+月份，工号，姓名，送货单总数，送水数量，销售总额
+
+```sql
+CREATE VIEW `monthlyDelivery`
+AS
+SELECT
+  extract(YEAR_MONTH FROM `delivery`.`time`) AS `yearmonth`,
+  `staff`.`ID` AS `staffID`,
+  `staff`.`name` AS `staffName`,
+  count(`delivery`.`orderDetailID`) AS `totalDelivery`,
+  sum(`orderDetail`.`number`) AS `totalQuantity`,
+  sum((`orderDetail`.`number` * `water`.`price`)) AS `totalSales`
+FROM
+  (((`delivery` JOIN `orderDetail`) JOIN `staff`) JOIN `water`)
+WHERE
+  (
+    (`delivery`.`staffID` = `staff`.`ID`)
+    AND (`orderDetail`.`ID` = `delivery`.`orderDetailID`)
+    AND (`water`.`ID` = `orderDetail`.`waterID`)
+  ) 
+GROUP BY
+  extract(YEAR_MONTH FROM `delivery`.`time`),
+  `delivery`.`staffID`;
+```
+
+
+
+## 月度销售统计
+
+月份，客户名称，订单总数，用水量总额，销售总额
+
+```sql
+CREATE VIEW `monthlySales`
+AS
+SELECT
+  extract(YEAR_MONTH FROM `saleDetail`.`time`) AS `yearmonth`,
+  `saleDetail`.`customName` AS `customName`,
+  count(`saleDetail`.`customName`) AS `totalOrder`,
+  sum(`saleDetail`.`quantity`) AS `totalQuantity`,
+  sum(`saleDetail`.`totalPrice`) AS `totalSales`
+FROM
+  `saleDetail`
+GROUP BY
+  extract(YEAR_MONTH FROM `saleDetail`.`time`),
+  `saleDetail`.`customName`;
+```
+
+
+
+## 进货记录
+
+矿泉水名称，矿泉水成本，供应商名称，数量，总价，进货时间
+
+```sql
+CREATE VIEW `purchaseDetail`
+AS
+SELECT
+  `purchase`.`time` AS `time`,
+  `water`.`name` AS `waterName`,
+  `water`.`cost` AS `waterCost`,
+  `supplier`.`name` AS `supplierName`,
+  `purchase`.`quantity` AS `quantity`,
+  (`water`.`cost` * `purchase`.`quantity`) AS `totalCost`
+FROM
+  ((`water` JOIN `purchase`) JOIN `supplier`)
+WHERE
+  ((`water`.`ID` = `purchase`.`waterID`) AND (`supplier`.`ID` = `purchase`.`supplierID`));
+```
+
+
+
+## 销售记录
+
+矿泉水名称，矿泉水售价，客户名称，数量，总价，销售时间
+
+```sql
+CREATE VIEW `saleDetail`
+AS
+SELECT
+  `delivery`.`time` AS `time`,
+  `water`.`name` AS `waterName`,
+  `water`.`price` AS `waterPrice`,
+  `custom`.`name` AS `customName`,
+  `orderDetail`.`number` AS `quantity`,
+  (`water`.`price` * `orderDetail`.`number`) AS `totalPrice`
+FROM
+  (((`water` JOIN `custom`) JOIN `orderDetail`) JOIN `delivery`)
+WHERE
+  (
+    (`water`.`ID` = `orderDetail`.`waterID`)
+    AND (`delivery`.`orderDetailID` = `orderDetail`.`ID`)
+  AND (`orderDetail`.`customID` = `custom`.`ID`)
+  );
+```
+
