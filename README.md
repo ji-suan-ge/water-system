@@ -36,8 +36,6 @@
 | 矿泉水售价  | INT   | -    | 大于 0 ，单位为分                                            |
 | 种类数      | INT   | -    | 非负                                                         |
 
-
-
 ## 关系模式
 
 根据 **E-R** 图可以进一步分解出关系模型，如下：
@@ -58,8 +56,6 @@
 | 管理员表     | <u>管理员编号</u>、管理员姓名、密码                          | -                                |
 
 
-
-
 ## SQL建表语句
 
 ### 客户信息表
@@ -77,8 +73,6 @@ CREATE TABLE `custom` (
 );
 ```
 
-
-
 ### 员工信息表
 
 ```sql
@@ -94,8 +88,6 @@ CREATE TABLE `staff` (
 );
 ```
 
-
-
 ### 供应商表
 
 ```sql
@@ -110,8 +102,6 @@ CREATE TABLE `supplier` (
 );
 ```
 
-
-
 ### 矿泉水表
 
 ```sql
@@ -125,8 +115,6 @@ CREATE TABLE `water` (
   PRIMARY KEY (`ID`)
 );
 ```
-
-
 
 ### 订单信息表
 
@@ -144,8 +132,6 @@ CREATE TABLE `orderDetail` (
 );
 ```
 
-
-
 ### 仓库表
 
 ```sql
@@ -157,8 +143,6 @@ CREATE TABLE `repository` (
   PRIMARY KEY (`ID`)
 );
 ```
-
-
 
 ### 仓库存放信息表
 
@@ -173,8 +157,6 @@ CREATE TABLE `stock` (
 );
 ```
 
-
-
 ### 供应产品表
 
 ```sql
@@ -186,8 +168,6 @@ CREATE TABLE `supplierWater` (
   FOREIGN KEY (`waterID`) REFERENCES `water` (`ID`)
 );
 ```
-
-
 
 ### 送货记录表
 
@@ -201,8 +181,6 @@ CREATE TABLE `delivery` (
   FOREIGN KEY (`staffID`) REFERENCES `staff` (`ID`)
 );
 ```
-
-
 
 ### 进货记录表
 
@@ -221,8 +199,6 @@ CREATE TABLE `purchase` (
 );
 ```
 
-
-
 ### 存/取货记录表
 
 ```sql
@@ -238,8 +214,6 @@ CREATE TABLE `flowRecord` (
 );
 ```
 
-
-
 ### 管理员表
 
 ```sql
@@ -250,8 +224,6 @@ CREATE TABLE `admin` (
   PRIMARY KEY (`ID`)
 );
 ```
-
-
 
 ## 完整性设计
 
@@ -278,8 +250,6 @@ CREATE TABLE `admin` (
 | 存取货记录   | 存取货编号             |
 | 管理员       | 管理员编号             |
 
-
-
 ### 参照完整性
 
 参照完整性是对关系数据库中建立关联关系的数据表间数据参照引用的约束，也就是对外键的约束。准确地说，参照完整性是指关系中的外键必须是另一个关系的主键有效值，或者是NULL。
@@ -295,8 +265,6 @@ CREATE TABLE `admin` (
 | 送货记录     | 订单号、工号                     |
 | 进货记录     | 矿泉水编号、供应商编号、员工编号   |
 | 存/取货记录  | 工号、矿泉水编号                 |
-
-
 
 #### 增加```矿泉水表```记录时
 
@@ -315,8 +283,6 @@ BEGIN
     (1, new.ID, 0);
 END;
 ```
-
-
 
 
 #### 增加```供应产品表```记录时
@@ -339,8 +305,6 @@ BEGIN
 END;
 ```
 
-
-
 #### 删除```供应产品表```记录时
 自动减少```供应商表```中的供应产品种类数
 
@@ -360,8 +324,6 @@ BEGIN
 END;
 ```
 
-
-
 #### 增加进货记录表时
 
 自动增加```存/取货记录表```
@@ -379,8 +341,6 @@ BEGIN
     (new.staffID, new.waterID, new.quantity, CURRENT_TIMESTAMP);
 END;
 ```
-
-
 
 #### 增加送货记录时
 
@@ -420,8 +380,6 @@ BEGIN
 END;
 ```
 
-
-
 #### 增加```存/取货记录表```时
 自动修改```仓库存放信息表```
 
@@ -441,11 +399,7 @@ BEGIN
 END;
 ```
 
-
-
 ### 用户自定义完整性
-
-
 
 # 物理结构设计
 
@@ -459,8 +413,6 @@ END;
 6、在仓库表主码属性列上建立主键索引
 7、在送货记录主码属性列上建立主键索引
 8、存/取记录表主码属性列上建立主键索引
-
-
 
 ## 视图
 
@@ -486,8 +438,6 @@ WHERE
 GROUP BY
   `monthlySales`.`yearmonth`;
 ```
-
-
 
 ### 月度工单统计
 
@@ -516,8 +466,6 @@ GROUP BY
   `delivery`.`staffID`;
 ```
 
-
-
 ### 月度销售统计
 
 月份，客户名称，订单总数，用水量总额，销售总额
@@ -538,8 +486,6 @@ GROUP BY
   `saleDetail`.`customName`;
 ```
 
-
-
 ### 进货记录
 
 矿泉水名称，矿泉水成本，供应商名称，数量，总价，进货时间
@@ -559,8 +505,6 @@ FROM
 WHERE
   ((`water`.`ID` = `purchase`.`waterID`) AND (`supplier`.`ID` = `purchase`.`supplierID`));
 ```
-
-
 
 ### 销售记录
 
@@ -585,8 +529,6 @@ WHERE
   AND (`orderDetail`.`customID` = `custom`.`ID`)
   );
 ```
-
-
 
 ## 安全机制
 
