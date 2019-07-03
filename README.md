@@ -3,7 +3,7 @@
 
 ## E-R 图
 
-![ER图](.\image\ER.png)
+![ER图](./image/ER.svg)
 
 ## 数据项
 
