@@ -1235,9 +1235,98 @@ BEGIN
 END;
 ```
 
-# 七、测试和运行
+# 七、运行和测试
 
+## 7.1 客户前台测试
 
+### 7.1.1 客户登录页面
+
+客户可以在这个页面输入用账号和密码进行登录。如果登陆成功则跳转至下单页面，否则将会得到密码错误的提示。
+
+![客户登录](./image/preview/custom-login.png)
+
+![登录失败](./image/preview/custom-login-failed.png)
+
+### 7.1.2 客户下单页面
+
+客户可以在这个页面进行下单操作。
+
+如果矿泉水库存不足，则会显示`缺货`字样，客户将不能购买这个商品。
+
+点击`购买`按钮，输入数量，再点击`下单`按钮即可。
+
+![客户下单](./image/preview/custom-order.png)
+![客户下单2](./image/preview/custom-buy.png)
+
+## 7.2 管理前台测试
+
+### 7.2.1 管理员登录页面
+
+管理员可以在这个页面输入用账号和密码进行登录。如果登陆成功则跳转至系统管理页面，否则将会得到密码错误的提示。
+
+![管理员登录](./image/preview/manage/login.png)
+
+![管理员登录失败](./image/preview/manage/login-failed.png)
+
+### 7.2.2 员工管理页面
+
+管理员可以在这个页面对员工进行管理，包括增加员工、修改员工工资、删除员工。
+
+![员工管理](./image/preview/manage/staff.png)
+
+下面演示修改员工工资：
+
+修改前：
+
+![修改工资前](./image/preview/manage/salary-before.png)
+
+修改后：
+
+![修改工资后](./image/preview/manage/salary-after.png)
+
+### 7.2.3 客户管理页面
+
+管理员可以在这个页面添加客户或者删除客户。
+
+![客户管理](./image/preview/manage/custom.png)
+
+### 7.2.4 矿泉水管理页面
+
+管理员可以在这个页面添加矿泉水、删除矿泉水、进货、添加供应商。
+
+![矿泉水管理](./image/preview/manage/water.png)
+
+下面演示进货的流程：
+
+进货前：
+
+![进货前](./image/preview/manage/water-before.png)
+
+进货过程：
+
+![](./image/preview/manage/water-ing.png)
+
+进货后：
+
+![进货后](./image/preview/manage/water-after.png)
+
+### 7.2.5 月度收支页面
+
+管理员可以在这个页面按月份查看收支情况。
+
+![月度收支](./image/preview/manage/profit.png)
+
+### 7.2.6 月度工单页面
+
+管理员可以在这个页面按月份查看工单情况。
+
+![月度工单](./image/preview/manage/delivery.png)
+
+### 7.2.7 月度销售页面
+
+管理员可以在这个页面按月份查看销售情况。
+
+![月度销售](./image/preview/manage/sale.png)
 
 # 八、总结
 
